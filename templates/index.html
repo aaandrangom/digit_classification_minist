@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MNIST Digit Recognition</title>
+  </head>
+  <body>
+    <h1>MNIST Digit Recognition</h1>
+    <form method="post" action="/predict" enctype="multipart/form-data">
+      <input type="file" name="file" accept=".png, .jpg, .jpeg" />
+      <input type="submit" value="Predict" />
+    </form>
+    <div id="prediction"></div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      $("form").submit(function (event) {
+        event.preventDefault();
+        var formData = new FormData(this);
+        $.ajax({
+          url: "/predict",
+          type: "POST",
+          data: formData,
+          contentType: false,
+          cache: false,
+          processData: false,
+          success: function (response) {
+            var predicted_number = response.predicted_number;
+            $("#prediction").text("Predicted Number: " + predicted_number);
+          },
+        });
+      });
+    </script>
+  </body>
+</html>
